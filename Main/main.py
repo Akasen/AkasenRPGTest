@@ -65,16 +65,23 @@ class Potion(Item):
         PC.heal(2)
 
 ##Gameplay... I think 
-    
 
 PC = Player(10, 10, 18, 18, 18, 1, 0)
+
+def heal(x):
+    PC.heal(1)
+    
+def hurt(x):
+    PC.heal(-1)    
 
 Commands = {"Stats" :   Player.show_stats,
             "Test"  :   "Testing",
             "Attack" :  Player.attack,
-            "Heal" :    Player.heal(1)
+            "TestHeal" :    heal,
+            "TestHurt" :    hurt
             }
-      
+#While loop that takes in commands
+#From Balducci Source.    
 while PC.health > 0:
     line = raw_input(">> ")
     args = line.split()
