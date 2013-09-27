@@ -1,5 +1,3 @@
-#RPG?
-
 #randint to be used in the future for random variables
 #from random import randint
 
@@ -67,6 +65,7 @@ class Potion(Item):
 ##Gameplay... I think 
 
 PC = Player(10, 10, 18, 18, 18, 1, 0)
+ED = Enemy(10, 10, 10, 10, 10)
 
 def heal(x):
     PC.heal(1)
@@ -74,26 +73,34 @@ def heal(x):
 def hurt(x):
     PC.heal(-1)    
 
+#Commands player can input
 Commands = {"Stats" :   Player.show_stats,
-            "Test"  :   "Testing",
             "Attack" :  Player.attack,
             "TestHeal" :    heal,
             "TestHurt" :    hurt
             }
-#While loop that takes in commands
-#From Balducci Source.    
-while PC.health > 0:
-    line = raw_input(">> ")
-    args = line.split()
-    if len(line) > 0:
-        commandFound = False
-        for c in Commands.keys():
-            if args[0] == c[:len(args[0])]:
-                Commands[c](PC)
-                commandFound = True
-                break
-        if not commandFound:
-            print "No such term"
+
+#From Balducci Source.
+#Function that takes in player input
+#and compars with Commands Dictionary
+def player_input():
+    while PC.health > 0:
+        line = raw_input(">> ")
+        args = line.split()
+        if len(line) > 0:
+            commandFound = False
+            for c in Commands.keys():
+                if args[0] == c[:len(args[0])]:
+                    Commands[c](PC)
+                    commandFound = True
+                    break
+            if not commandFound:
+                print "No such term"
+ 
+def combat():
+    pass
+            
+def main():
+    player_input()
     
-##Main Loop##
-#def
+main()
