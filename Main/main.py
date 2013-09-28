@@ -20,18 +20,19 @@ class Character(object):
             self.health = int(self.health) + amount
         print "Your health is now " +str(self.health)
 
+    def attack(self, target):
+        damage = self.strength/2 + 1
+        target.health -= damage
+        print damage
+        print target.health
+        return damage
+    
 ###Player Class###
 class Player(Character):
     def __init__(self, MaxHP, health, strength, dexterity, stamina, level, experience):
         Character.__init__(self, MaxHP, health, strength, dexterity, stamina)
         self.level = level
         self.experience = experience
-
-    def attack(self):
-        damage = self.strength/2 + 1
-        print damage
-        return damage
-
     
     #def exp_gain(self):
     #    if experience >= expThresh:
@@ -73,9 +74,12 @@ def heal(x):
 def hurt(x):
     PC.heal(-1)    
 
+def attack(x):
+    PC.attack(ED)
+    
 #Commands player can input
-Commands = {"Stats" :   Player.show_stats,
-            "Attack" :  Player.attack,
+Commands = {"Stats" :       Player.show_stats,
+            "Attack" :      attack,
             "TestHeal" :    heal,
             "TestHurt" :    hurt
             }
@@ -100,7 +104,7 @@ def player_input():
 def combat():
     pass
             
-def main():
+def gameplay():
     player_input()
     
-main()
+gameplay()
