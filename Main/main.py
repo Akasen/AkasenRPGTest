@@ -3,7 +3,8 @@
 
 ##Character and NPC classes##
 class Character(object):
-    def __init__(self, MaxHP, health, strength, dexterity, stamina):
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina):
+        self.name = name
         self.health = health
         self.MaxHP = MaxHP
         self.strength = strength
@@ -29,14 +30,27 @@ class Character(object):
     
 ###Player Class###
 class Player(Character):
-    def __init__(self, MaxHP, health, strength, dexterity, stamina, level, experience):
-        Character.__init__(self, MaxHP, health, strength, dexterity, stamina)
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience):
+        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina)
         self.level = level
         self.experience = experience
     
     #def exp_gain(self):
     #    if experience >= expThresh:
             #Player Levels up... uuuuuh
+    ###COMMANDS###
+    def heal(self, y):
+        if self.health >= self.MaxHP:
+            self.health = self.health + y
+        else:
+            print "You are at full health"
+        
+    def hurt(self, y):
+        self.health = self.health - y
+    
+    #def attack(self, y):
+        #self.attack(x)#
+    
     
     def show_stats(self):
         print "Player Level is " +str(self.level)
@@ -53,58 +67,82 @@ class Enemy(Character):
 
 ###ITEM CLASS###
 class Item(object):
-    def __init__(self, itemtype):
+    def __init__(self, itemtype, cost):
         self.itemtype = itemtype
+        self.cost = cost
 
 class Potion(Item):
     def __init(self, itemtype):
         Item.__init__(self, itemtype)
         
     def use_heal(self):
-        PC.heal(2)
+        #PC.heal(2)
+        pass
+
+
+enemies = 0
 
 ##Gameplay... I think 
 
-PC = Player(10, 10, 18, 18, 18, 1, 0)
-ED = Enemy(10, 10, 10, 10, 10)
-
-def heal(x):
-    PC.heal(1)
+#ED = Enemy(10, 10, 10, 10, 10)
     
-def hurt(x):
-    PC.heal(-1)    
 
-def attack(x):
-    PC.attack(ED)
+class State(object):
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
+        self.player = Player(name, 10, 10, 18, 18, 18, 1, 0,)
+        self.commands = commands
+        self.done = False
+
+### State Command ###
+def cmdAttack(state):
+    state.player.attack
+
+def cmdHeal(state):
+    state.player.heal(1)
     
-#Commands player can input
-Commands = {"Stats" :       Player.show_stats,
-            "Attack" :      attack,
-            "TestHeal" :    heal,
-            "TestHurt" :    hurt
-            }
+def cmdHurt(state):
+    state.player.hurt(1)
 
-#From Balducci Source.
+def cmdShowStats(state):
+    state.player.show_stats()
+    
+
+
+def initState():
+    state = State(
+    raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 1, 0,
+    {"Stats" :      cmdShowStats,
+    "Attack" :      cmdAttack,
+    "TestHeal" :    cmdHeal,
+    "TestHurt" :    cmdHurt
+    })
+                  
+    return state
+
 #Function that takes in player input
 #and compars with Commands Dictionary
-def player_input():
-    while PC.health > 0:
-        line = raw_input(">> ")
-        args = line.split()
-        if len(line) > 0:
-            commandFound = False
-            for c in Commands.keys():
-                if args[0] == c[:len(args[0])]:
-                    Commands[c](PC)
-                    commandFound = True
-                    break
-            if not commandFound:
-                print "No such term"
+def player_input(cmds):
+    def getCommandStr():
+        args = raw_input(">> ").split()
+        if args == []:
+            return None
+        return args[0]
+    def commandNotFound(state):
+        print "I can't do that right now"
+    s = getCommandStr()
+    if s in cmds:
+        return cmds[s]
+    else:
+        return commandNotFound
+                
  
 def combat():
     pass
             
 def gameplay():
-    player_input()
-    
+    state = initState()
+    while not state.done:
+        cmd = player_input(state.commands)
+        cmd(state)
+            
 gameplay()
