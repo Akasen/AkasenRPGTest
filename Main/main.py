@@ -41,7 +41,7 @@ class Player(Character):
     ###COMMANDS### 
     
     def cAttack(self, target):
-        cDamage = Player.damage(self)
+        cDamage = self.damage()
         target.health -= cDamage
         return target.health
     
