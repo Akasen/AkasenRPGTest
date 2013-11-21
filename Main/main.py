@@ -15,15 +15,15 @@ class Character(object):
     #this checks to make sure the character is unable to
     #get mor health than the max Health
     def heal(self, amount):
-        if self.health + amount >= int(self.MaxHP):
+        if self.health + amount > int(self.MaxHP):
             self.health = int(self.MaxHP)
         else:
             self.health = int(self.health) + amount
         print "Your health is now " +str(self.health)
 
-    def enemyAttack(self, target):
+    def damage(self):
         damage = self.strength/2 + 1
-        target.health -= damage
+        #target.health -= damage
         print damage
         print target.health
         return damage
@@ -41,16 +41,16 @@ class Player(Character):
             #Player Levels up... uuuuuh
     ###COMMANDS###
     def heal(self, y):
-        if self.health >= self.MaxHP:
+        if self.health < self.MaxHP:
             self.health += y
         else:
             print "You are at full health"
+        if self.health > self.MaxHP:
+            self.health = self.MaxHP
         
     def hurt(self, y):
         self.health -= y
     
-    def attack(self, y):
-        enemy.attack(y)
     ###COMMANDS END###
     
     def show_stats(self):
@@ -84,7 +84,7 @@ class Potion(Item):
 
 enemies = 0
 
-#ED = Enemy(10, 10, 10, 10, 10)
+ED = Enemy(10, 10, 10, 10, 10, 10)
     
 
 class State(object):
@@ -96,10 +96,10 @@ class State(object):
 
 ### State Command ###
 def cmdAttack(state):
-    state.player.attack
+    state.player.damage(ED.enemy)
 
 def cmdHeal(state):
-    state.player.heal(1)
+    state.player.heal(10)
     
 def cmdHurt(state):
     state.player.hurt(1)
