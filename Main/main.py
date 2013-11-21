@@ -30,7 +30,7 @@ class Character(object):
     def Attack(self, target):
         cDamage = self.damage()
         target.health -= cDamage
-        return target.health
+        
 ###END CHARACTER CLASS###
 
 ###Player Class###
@@ -89,9 +89,8 @@ class State(object):
 
 ### State Command ###
 def cmdAttack(state):
-    health = state.player.Attack(ED)
+    state.player.Attack(ED[0])
     print ED[0].health
-    return health
 
 def cmdHeal(state):
     state.player.heal(10)
