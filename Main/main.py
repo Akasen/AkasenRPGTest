@@ -26,6 +26,11 @@ class Character(object):
     def damage(self):
         damage = self.strength/4 + 1
         return damage
+    
+    def Attack(self, target):
+        cDamage = self.damage()
+        target.health -= cDamage
+        return target.health
 ###END CHARACTER CLASS###
 
 ###Player Class###
@@ -39,11 +44,6 @@ class Player(Character):
     #    if experience >= expThresh:
             #Player Levels up... uuuuuh
     ###COMMANDS### 
-    
-    def cAttack(self, target):
-        cDamage = self.damage()
-        target.health -= cDamage
-        return target.health
     
     ###COMMANDS END###
     
@@ -78,8 +78,7 @@ class Potion(Item):
 
 enemies = 0
 
-ED = Enemy(10, 10, 10, 10, 10, 10)
-    
+ED = [Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10)] 
 
 class State(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
@@ -90,8 +89,9 @@ class State(object):
 
 ### State Command ###
 def cmdAttack(state):
-    ED.health = state.player.cAttack(ED)
-    print ED.health
+    health = state.player.Attack(ED)
+    print ED[0].health
+    return health
 
 def cmdHeal(state):
     state.player.heal(10)
