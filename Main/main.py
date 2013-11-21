@@ -24,10 +24,7 @@ class Character(object):
             self.health = self.MaxHP
 
     def damage(self):
-        damage = self.strength/2 + 1
-        #target.health -= damage
-        print damage
-        print target.health
+        damage = self.strength/4 + 1
         return damage
 ###END CHARACTER CLASS###
 
@@ -42,6 +39,12 @@ class Player(Character):
     #    if experience >= expThresh:
             #Player Levels up... uuuuuh
     ###COMMANDS### 
+    
+    def cAttack(self, target):
+        cDamage = Player.damage(self)
+        target.health -= cDamage
+        return target.health
+    
     ###COMMANDS END###
     
     def show_stats(self):
@@ -87,7 +90,8 @@ class State(object):
 
 ### State Command ###
 def cmdAttack(state):
-    state.player.damage(ED.enemy)
+    ED.health = state.player.cAttack(ED)
+    print ED.health
 
 def cmdHeal(state):
     state.player.heal(10)
