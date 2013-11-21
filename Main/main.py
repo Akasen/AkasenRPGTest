@@ -21,13 +21,14 @@ class Character(object):
             self.health = int(self.health) + amount
         print "Your health is now " +str(self.health)
 
-    def attack(self, target):
+    def enemyAttack(self, target):
         damage = self.strength/2 + 1
         target.health -= damage
         print damage
         print target.health
         return damage
-    
+###END CHARACTER CLASS###
+
 ###Player Class###
 class Player(Character):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience):
@@ -41,16 +42,16 @@ class Player(Character):
     ###COMMANDS###
     def heal(self, y):
         if self.health >= self.MaxHP:
-            self.health = self.health + y
+            self.health += y
         else:
             print "You are at full health"
         
     def hurt(self, y):
-        self.health = self.health - y
+        self.health -= y
     
-    #def attack(self, y):
-        #self.attack(x)#
-    
+    def attack(self, y):
+        enemy.attack(y)
+    ###COMMANDS END###
     
     def show_stats(self):
         print "Player Level is " +str(self.level)
@@ -58,11 +59,12 @@ class Player(Character):
         print "Player Strength is " +str(self.strength)
         print "Player Dexterity is " +str(self.dexterity)
         print "Player Stamina is " +str(self.stamina)
+###END Player Class###
 
 ###ENEMY CLASS###                                                        
 class Enemy(Character):
-    def __init__(self, MaxHP, health, strength, dexterity, stamina):
-        Character.__init__(self, MaxHP, health, strength, dexterity, stamina)
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina):
+        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina)
         
 
 ###ITEM CLASS###
@@ -72,17 +74,15 @@ class Item(object):
         self.cost = cost
 
 class Potion(Item):
-    def __init(self, itemtype):
+    def __init__(self, itemtype):
         Item.__init__(self, itemtype)
         
     def use_heal(self):
         #PC.heal(2)
         pass
-
+###ITEM CLASS END###
 
 enemies = 0
-
-##Gameplay... I think 
 
 #ED = Enemy(10, 10, 10, 10, 10)
     
@@ -91,6 +91,7 @@ class State(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
         self.player = Player(name, 10, 10, 18, 18, 18, 1, 0,)
         self.commands = commands
+        self.quest1 = False
         self.done = False
 
 ### State Command ###
@@ -106,15 +107,23 @@ def cmdHurt(state):
 def cmdShowStats(state):
     state.player.show_stats()
     
+def cmdQuit(state):
+    state.done = True
+
+def cmdStore(state):
+    state.player.shop()    
+### Commands End ###
+    
 
 
 def initState():
     state = State(
     raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 1, 0,
-    {"Stats" :      cmdShowStats,
-    "Attack" :      cmdAttack,
-    "TestHeal" :    cmdHeal,
-    "TestHurt" :    cmdHurt
+    {"Stats"    :    cmdShowStats,
+    "Attack"    :    cmdAttack,
+    "TestHeal"  :    cmdHeal,
+    "TestHurt"  :    cmdHurt,
+    "Quit"      :    cmdQuit
     })
                   
     return state
@@ -135,9 +144,6 @@ def player_input(cmds):
     else:
         return commandNotFound
                 
- 
-def combat():
-    pass
             
 def gameplay():
     state = initState()
