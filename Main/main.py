@@ -1,15 +1,16 @@
 #randint to be used in the future for random variables
-#from random import randint
+from random import randint
 
 ##Character and NPC classes##
 class Character(object):
-    def __init__(self, name, MaxHP, health, strength, dexterity, stamina):
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, armor):
         self.name = name
         self.health = health
         self.MaxHP = MaxHP
         self.strength = strength
         self.dexterity = dexterity
         self.stamina = stamina
+        self.armor = armor
 
     #Healing function. If a character is healed,
     #this checks to make sure the character is unable to
@@ -35,8 +36,8 @@ class Character(object):
 
 ###Player Class###
 class Player(Character):
-    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience):
-        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina)
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, armor, level, experience):
+        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina, armor)
         self.level = level
         self.experience = experience
     
@@ -57,8 +58,8 @@ class Player(Character):
 
 ###ENEMY CLASS###                                                        
 class Enemy(Character):
-    def __init__(self, name, MaxHP, health, strength, dexterity, stamina):
-        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina)
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, armor):
+        Character.__init__(self, name, MaxHP, health, strength, dexterity, stamina, armor)
         
 
 ###ITEM CLASS###
@@ -78,19 +79,21 @@ class Potion(Item):
 
 enemies = 0
 
-ED = [Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10)] 
+ED = [Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10)] 
 
 class State(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
-        self.player = Player(name, 10, 10, 18, 18, 18, 1, 0,)
+        self.player = Player(name, 10, 10, 18, 18, 18, 5, 1, 0)
         self.commands = commands
         self.quest1 = False
         self.done = False
 
 ### State Command ###
 def cmdAttack(state):
-    state.player.Attack(ED[0])
-    print ED[0].health
+    randenemy = randint(0,3)
+    state.player.Attack(ED[randenemy])
+    print "You attack enemy number %s " %str(randenemy+1)
+    print ED[randenemy].health
 
 def cmdHeal(state):
     state.player.heal(10)
@@ -112,7 +115,7 @@ def cmdStore(state):
 
 def initState():
     state = State(
-    raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 1, 0,
+    raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 5, 1, 0,
     {"Stats"    :    cmdShowStats,
     "Attack"    :    cmdAttack,
     "TestHeal"  :    cmdHeal,
