@@ -82,7 +82,7 @@ ED = [Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10), Enemy(10, 10
 
 class State(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
-        self.player = Player(name, 10, 9, 18, 18, 18, 1, 0,)
+        self.player = Player(name, 10, 10, 18, 18, 18, 1, 0,)
         self.commands = commands
         self.quest1 = False
         self.done = False
@@ -112,7 +112,7 @@ def cmdStore(state):
 
 def initState():
     state = State(
-    raw_input("What is your name? \n"), 10, 9, 18, 18, 18, 1, 0,
+    raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 1, 0,
     {"Stats"    :    cmdShowStats,
     "Attack"    :    cmdAttack,
     "TestHeal"  :    cmdHeal,
