@@ -29,7 +29,7 @@ class Character(object):
         return damage
     
     def Attack(self, target):
-        cDamage = self.damage()
+        cDamage = self.damage() - (randint(0, target.armor)+1)
         target.health -= cDamage
         
 ###END CHARACTER CLASS###
@@ -82,7 +82,7 @@ enemies = 0
 ED = [Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10), Enemy(10, 10, 10, 10, 10, 10, 10)] 
 
 class State(object):
-    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
+    def __init__(self, name, MaxHP, health, strength, dexterity, stamina, armor, level, experience, commands):
         self.player = Player(name, 10, 10, 18, 18, 18, 5, 1, 0)
         self.commands = commands
         self.quest1 = False
