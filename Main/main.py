@@ -1,6 +1,13 @@
 #randint to be used in the future for random variables
 from random import randint
 
+###Dice Roller###
+def DiceRoll(x):
+    roll = randint(1, x)
+    return roll
+
+##Dice End###
+
 ##Character and NPC classes##
 class Character(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, armor):
@@ -29,7 +36,7 @@ class Character(object):
         return damage
     
     def Attack(self, target):
-        cDamage = self.damage() - (randint(0, target.armor)+1)
+        cDamage = self.damage()
         target.health -= cDamage
         
 ###END CHARACTER CLASS###
@@ -90,10 +97,14 @@ class State(object):
 
 ### State Command ###
 def cmdAttack(state):
+    roll = DiceRoll(20)
     randenemy = randint(0,3)
-    state.player.Attack(ED[randenemy])
-    print "You attack enemy number %s " %str(randenemy+1)
-    print ED[randenemy].health
+    if roll >= ED[randenemy].armor:
+        state.player.Attack(ED[randenemy])
+        print "You attack enemy number %s " %str(randenemy+1)
+        print ED[randenemy].health
+    else:
+        print "You missed fool."
 
 def cmdHeal(state):
     state.player.heal(10)
