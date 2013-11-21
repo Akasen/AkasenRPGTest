@@ -14,12 +14,14 @@ class Character(object):
     #Healing function. If a character is healed,
     #this checks to make sure the character is unable to
     #get mor health than the max Health
-    def heal(self, amount):
-        if self.health + amount > int(self.MaxHP):
-            self.health = int(self.MaxHP)
+    def heal(self, y):
+        if self.health < self.MaxHP:
+            self.health += y
+            print "Healed by %s HP" % y
         else:
-            self.health = int(self.health) + amount
-        print "Your health is now " +str(self.health)
+            print "You are at full health"
+        if self.health > self.MaxHP:
+            self.health = self.MaxHP
 
     def damage(self):
         damage = self.strength/2 + 1
@@ -39,18 +41,7 @@ class Player(Character):
     #def exp_gain(self):
     #    if experience >= expThresh:
             #Player Levels up... uuuuuh
-    ###COMMANDS###
-    def heal(self, y):
-        if self.health < self.MaxHP:
-            self.health += y
-        else:
-            print "You are at full health"
-        if self.health > self.MaxHP:
-            self.health = self.MaxHP
-        
-    def hurt(self, y):
-        self.health -= y
-    
+    ###COMMANDS### 
     ###COMMANDS END###
     
     def show_stats(self):
@@ -89,7 +80,7 @@ ED = Enemy(10, 10, 10, 10, 10, 10)
 
 class State(object):
     def __init__(self, name, MaxHP, health, strength, dexterity, stamina, level, experience, commands):
-        self.player = Player(name, 10, 10, 18, 18, 18, 1, 0,)
+        self.player = Player(name, 10, 9, 18, 18, 18, 1, 0,)
         self.commands = commands
         self.quest1 = False
         self.done = False
@@ -118,7 +109,7 @@ def cmdStore(state):
 
 def initState():
     state = State(
-    raw_input("What is your name? \n"), 10, 10, 18, 18, 18, 1, 0,
+    raw_input("What is your name? \n"), 10, 9, 18, 18, 18, 1, 0,
     {"Stats"    :    cmdShowStats,
     "Attack"    :    cmdAttack,
     "TestHeal"  :    cmdHeal,
